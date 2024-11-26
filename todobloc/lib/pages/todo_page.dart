@@ -107,6 +107,11 @@ class _TodoPageState extends State<TodoPage> {
       body: BlocBuilder<TodoBloc,TodoState>(
         builder: (context,state) {
           if(state is TodoInitial) return const SizedBox.shrink();
+          if(state is TodoLoading){
+          return const Center(
+            child: CircularProgressIndicator()
+           );
+          }
           List<Todo> list = state.todos;
           return ListView.builder(
             itemCount: list.length,
@@ -147,6 +152,12 @@ class _TodoPageState extends State<TodoPage> {
                     value: 'remove',
                     child: Text(
                       'Remove'
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'keluar',
+                    child: Text(
+                      'Keluar'
                     ),
                   ),
                 ]),

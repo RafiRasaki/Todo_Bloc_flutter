@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,24 +10,39 @@ part 'todo_state.dart';
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(const TodoInitial([])) {
 
-    on<OnAddTodo>((event, emit) {
-      Todo newTodo = event.newTodo;
-      emit(TodoAdded([...state.todos, newTodo]));
-    });
+    //Refector Event AddTodo
+    on<OnAddTodo>(addTodo);
 
-    on<OnUpdateTodo>((event, emit) {
-      Todo newTodo = event.newTodo;
-      int index = event.index;
-      List<Todo> TodosUpdate = state.todos;
-      TodosUpdate[index] = newTodo;
-      emit(TodoUpdate(TodosUpdate));
-    });
+    //Refector Event UpdateTodo
+    on<OnUpdateTodo>(updateTodo);
 
-    on<OnRemoveTodo>((event, emit) {
-      int index = event.index;
-      List<Todo> todosRemove = state.todos;
-      todosRemove.removeAt(index);
-      emit(TodoRemove(todosRemove));
-    });
+    //Refector Event RemoveTodo
+    on<OnRemoveTodo>(removeTodo);
+  }
+
+  FutureOr<void> removeTodo(OnRemoveTodo event, Emitter<TodoState> emit) async{
+    emit (TodoLoading(state.todos));
+    await Future.delayed(Duration(milliseconds: 1500));
+    int index = event.index;
+    List<Todo> todosRemove = state.todos;
+    todosRemove.removeAt(index);
+    emit(TodoRemove(todosRemove));
+  }
+
+  FutureOr<void> updateTodo(OnUpdateTodo event, Emitter<TodoState> emit)async {
+    emit (TodoLoading(state.todos));
+    await Future.delayed(Duration(milliseconds: 1500));
+    Todo newTodo = event.newTodo;
+    int index = event.index;
+    List<Todo> TodosUpdate = state.todos;
+    TodosUpdate[index] = newTodo;
+    emit(TodoUpdate(TodosUpdate));
+  }
+
+  FutureOr<void> addTodo(OnAddTodo event, Emitter<TodoState>emit) async {
+    emit (TodoLoading(state.todos));
+    await Future.delayed(Duration(milliseconds: 1500));
+    Todo newTodo = event.newTodo;
+    emit(TodoAdded([...state.todos, newTodo]));
   }
 }
