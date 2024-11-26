@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       //Mendaftarkan Bloc Yang Telah Terbuat
       create: (context) => TodoBloc(),
-
       //Route Page
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

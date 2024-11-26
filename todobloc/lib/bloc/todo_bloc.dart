@@ -19,7 +19,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       int index = event.index;
       List<Todo> TodosUpdate = state.todos;
       TodosUpdate[index] = newTodo;
-      emit(TodoRemove(TodosUpdate));
+      emit(TodoUpdate(TodosUpdate));
     });
 
     on<OnRemoveTodo>((event, emit) {
