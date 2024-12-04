@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todobloc/bloc/todo_bloc.dart';
+import 'package:todobloc/observer/simple_bloc_observer.dart';
 import 'package:todobloc/pages/todo_page.dart';
 
 void main() {
+  Bloc.observer = SimpleBlocObserver();
   runApp(const MyApp());
 }
 

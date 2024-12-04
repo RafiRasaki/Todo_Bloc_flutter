@@ -94,6 +94,12 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   @override
+  void initState() {
+    context.read<TodoBloc>().add(OnFetchTodo());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -102,12 +108,12 @@ class _TodoPageState extends State<TodoPage> {
             'ToDoList Item',
             ),
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.blue,
       ),
       body: BlocBuilder<TodoBloc,TodoState>(
         builder: (context,state) {
-          if(state is TodoInitial) return const SizedBox.shrink();
-          if(state is TodoLoading){
+          if(state.status == TodoStatus.init) return const SizedBox.shrink();
+          if(state.status == TodoStatus.loading){
           return const Center(
             child: CircularProgressIndicator()
            );
@@ -120,7 +126,7 @@ class _TodoPageState extends State<TodoPage> {
               return ListTile(
                 leading: CircleAvatar(
                   child: Text('${index + 1}'),
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: Colors.blue,
                 ),
                 title: Text(todo.title),
                 subtitle: Text(todo.description),
@@ -170,7 +176,7 @@ class _TodoPageState extends State<TodoPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: addTodo,
         child: const Icon(Icons.add),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blueAccent,
         ),
     );
   }
